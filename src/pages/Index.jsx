@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Box, VStack, HStack, Avatar, AvatarBadge, Heading, Text, Input, Divider, Spacer, Container } from "@chakra-ui/react";
 import { FaCheck } from "react-icons/fa";
 
-const ChatItem = ({ name, message, time, profilePic, unread }) => (
-  <HStack px={4} py={3} spacing={4} _hover={{ bg: "gray.100", cursor: "pointer" }}>
+const ChatItem = ({ name, message, time, profilePic, unread, onClick, isSelected }) => (
+  <HStack px={4} py={3} spacing={4} _hover={{ bg: "gray.100", cursor: "pointer" }} onClick={onClick} bg={isSelected ? "gray.100" : "white"}>
     <Avatar name={name} src={profilePic}>
       {unread && <AvatarBadge boxSize="1em" bg="green.500" />}
     </Avatar>
@@ -96,7 +96,14 @@ const Index = () => {
           </HStack>
           <VStack spacing={0} align="stretch" overflowY="auto">
             {conversations.map((c) => (
-              <ChatItem key={c.name} onClick={() => setCurrentConversation(c)} {...c} />
+              <ChatItem
+                key={c.name}
+                onClick={() => {
+                  setCurrentConversation({ ...c, messages: [] });
+                }}
+                isSelected={c.name === currentConversation.name}
+                {...c}
+              />
             ))}
           </VStack>
         </VStack>
