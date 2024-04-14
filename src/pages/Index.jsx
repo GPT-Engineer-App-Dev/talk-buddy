@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, VStack, HStack, Avatar, AvatarBadge, Heading, Text, Input, Divider, Spacer, Container } from "@chakra-ui/react";
+import { Box, VStack, HStack, Avatar, AvatarBadge, Heading, Text, Input, Divider, Spacer, Container, Button, useToast } from "@chakra-ui/react";
 import { FaCheck } from "react-icons/fa";
 
 const ChatItem = ({ name, message, time, profilePic, unread, onClick, isSelected }) => (
@@ -31,7 +31,8 @@ const ChatMessage = ({ message, from, time }) => (
   </VStack>
 );
 
-const Index = () => {
+const Index = ({ user, onLogout }) => {
+  const toast = useToast();
   const [conversations, setConversations] = useState([
     { name: "Alice Smith", message: "Hey there! How's it going?", time: "10:31 AM", profilePic: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHxmZW1hbGUlMjBlbXBsb3llZSUyMHBvcnRyYWl0fGVufDB8fHx8MTcxMzAyMTEyMXww&ixlib=rb-4.0.3&q=80&w=1080", unread: true },
     { name: "Bob Johnson", message: "I'll send over the files this afternoon", time: "Yesterday", profilePic: "https://images.unsplash.com/photo-1541577141970-eebc83ebe30e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwyfHxtYWxlJTIwZW1wbG95ZWUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3MTMwMjExMjB8MA&ixlib=rb-4.0.3&q=80&w=1080", unread: false },
@@ -88,11 +89,30 @@ const Index = () => {
     <HStack h="100vh" spacing={0} align="stretch">
       <Box w="30%" borderRightWidth={1} borderRightColor="gray.200">
         <VStack spacing={0} align="stretch">
-          <HStack px={4} py={3} borderBottomWidth={1} borderBottomColor="gray.200">
-            <Avatar name="John Doe" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHxtYWxlJTIwZW1wbG95ZWUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3MTMwMjExMjB8MA&ixlib=rb-4.0.3&q=80&w=1080">
-              <AvatarBadge boxSize="1.25em" bg="green.500" />
-            </Avatar>
-            <Heading size="lg">Chats</Heading>
+          <HStack px={4} py={3} borderBottomWidth={1} borderBottomColor="gray.200" justify="space-between">
+            <HStack spacing={3}>
+              <Avatar name={user.name} src={user.profilePic}>
+                <AvatarBadge boxSize="1.25em" bg="green.500" />
+              </Avatar>
+              <Heading size="lg">{user.name}</Heading>
+            </HStack>
+            <Button
+              colorScheme="blue"
+              variant="outline"
+              onClick={() => {
+                toast({
+                  title: "Logging out...",
+                  status: "info",
+                  duration: 1000,
+                  isClosable: true,
+                });
+                setTimeout(() => {
+                  onLogout();
+                }, 1000);
+              }}
+            >
+              Log Out
+            </Button>
           </HStack>
           <VStack spacing={0} align="stretch" overflowY="auto">
             {conversations.map((c) => (

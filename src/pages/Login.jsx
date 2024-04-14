@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, VStack, Heading, Text, Input, Button } from "@chakra-ui/react";
+import { Box, Container, VStack, Heading, Text, Input, Button } from "@chakra-ui/react";
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <Box>
+    <Container centerContent>
       <VStack spacing={4} align="stretch">
         <Heading>Welcome to ChatApp</Heading>
         <Text>Please log in to continue</Text>
@@ -32,7 +32,7 @@ const Login = ({ onLogin }) => {
         </Button>
         <Button variant="link">Create Account</Button>
       </VStack>
-    </Box>
+    </Container>
   );
 };
 

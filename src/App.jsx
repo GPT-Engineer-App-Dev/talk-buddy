@@ -9,7 +9,23 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={user ? <Index user={user} onLogout={() => setUser(null)} /> : <Navigate to="/login" />} />
+        <Route
+          exact
+          path="/"
+          element={
+            user ? (
+              <Index
+                user={user}
+                onLogout={() => {
+                  setUser(null);
+                  navigate("/login");
+                }}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
         <Route path="/login" element={<Login onLogin={setUser} />} />
       </Routes>
     </Router>
